@@ -417,12 +417,16 @@ uis.directive('uiSelect',
 
             if (!uisOffset(dropdown).height && $select.$animate && $select.$animate.on && $select.$animate.enabled(dropdown)) {
               var needsCalculated = true;
-
-              $select.$animate.on('enter', dropdown, function (elem, phase) {
+              var onEnter = function (elem, phase) {
                 if (phase === 'close' && needsCalculated) {
                   calculateDropdownPosAfterAnimation();
                   needsCalculated = false;
                 }
+              };
+
+              $select.$animate.on('enter', dropdown, onEnter);
+              scope.$on('$destroy', function() {
+                $select.$animate.off('enter', dropdown, onEnter);
               });
             } else {
               calculateDropdownPosAfterAnimation();

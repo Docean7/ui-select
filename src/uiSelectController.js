@@ -152,8 +152,14 @@ uis.controller('uiSelectCtrl',
 
         if (ctrl.items.length > 0) {
           ctrl.$animate.on('enter', container[0], animateHandler);
+          $scope.$on('$destroy', function() {
+            ctrl.$animate.off('enter', container[0], animateHandler);
+          });
         } else {
           ctrl.$animate.on('removeClass', searchInput[0], animateHandler);
+          $scope.$on('$destroy', function() {
+            ctrl.$animate.off('removeClass', searchInput[0], animateHandler);
+          });
         }
       } else {
         $timeout(function () {
